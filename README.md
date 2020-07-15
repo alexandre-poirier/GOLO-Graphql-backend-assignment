@@ -59,3 +59,5 @@ Finally, I will create a front-end application separated from the backend app us
         * packages with delivery status
 
 I will deploy the frontend on a python server as the the compiled frontend should only consist of static files and the python instance scaling is faster than Node.js' scaling from what I remember on Google App Engine.
+
+Note: In order for the backend to respect proper conventions of a RESTFul API server, the CRUD operations will be done using the corresponding http methods (POST, GET, PUT and DELETE for example).
