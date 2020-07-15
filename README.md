@@ -60,4 +60,7 @@ Finally, I will create a front-end application separated from the backend app us
 
 I will deploy the frontend on a python server as the the compiled frontend should only consist of static files and the python instance scaling is faster than Node.js' scaling from what I remember on Google App Engine.
 
-Note: In order for the backend to respect proper conventions of a RESTFul API server, the CRUD operations will be done using the corresponding http methods (POST, GET, PUT and DELETE for example).
+Note: 
+
+1. In order for the backend to respect proper conventions of a RESTFul API server, the CRUD operations will be done using the corresponding http methods (POST, GET, PUT and DELETE for example).
+2. The sub portion of the payload in the JWT will be used as the ID of the resident or admin asking for a resource. The JWT will always check the provided privateKey and the ID in the ActiveSession table to validate the access to an endpoint (except for the login endpoint which creates a jwt).
