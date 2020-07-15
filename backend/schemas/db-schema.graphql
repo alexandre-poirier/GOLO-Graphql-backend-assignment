@@ -1,0 +1,41 @@
+type Resident {
+  id: ID
+  address: String
+  unitNumber: String
+  email: String
+  password: String
+  name: String
+  phoneNumber: String
+  user: Building!
+  packageUnit: [PackageUnit]
+}
+
+type ActiveSession {
+  id: ID
+  privateKey: String
+}
+
+type PackageUnit {
+  id: ID
+  code: String
+  packageIsDelivered: Boolean
+  resident: Resident!
+  building: Building!
+}
+
+type Building {
+  id: ID
+  address: String
+  packageUnit: [PackageUnit]
+}
+
+type User {
+  id: ID
+  name: String
+}
+
+type SecurityAdmin {
+  id: ID
+  email: String
+  password: String
+}
