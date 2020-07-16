@@ -1,8 +1,6 @@
 # GOLO Graphql backend assignment
  GOLO Graphql backend assignment for candidate Alexandre Poirier
 
-See [this link for actual assignment](https://www.notion.so/Assignment-4ba28a125f7e4fa684a5f67f44d5fae3)
-
 Let me first be transparent by letting you know I don't know yet how build a proper CI/CD using .yaml configuration. I do know how to manually deploy all the technologies that I'll be mentioning here and know where to find the documentation on how to build the said .yaml file to automate the build and might try to do so if I have enough time.
 
 The backend will be done in express.js. It will run on Node.js server instance on Google App Engine. Google App Engine is a lightweight scalable solution for deploying scalable web servers. It automatically handles the creation and destruction of instance depending on the traffic and the initial app.yaml you provide. It also uses dockers under the hood apparently since version 2.
