@@ -12,6 +12,10 @@ CREATE TABLE `resident` (
 	`password` VARCHAR(50) NULL DEFAULT NULL,
 	`name` VARCHAR(50) NULL DEFAULT NULL,
 	`phone_number` VARCHAR(50) NULL DEFAULT NULL,
+	`is_sms_notification` BIT(1) NULL DEFAULT NULL,
+	`is_email_notification` BIT(1) NULL DEFAULT NULL,
+	`sms_notification_sent` BIT(1) NULL DEFAULT NULL,
+	`email_notification_sent` BIT(1) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )
 COLLATE='utf8_general_ci'
@@ -22,6 +26,7 @@ CREATE TABLE `active_session` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`private_key` VARCHAR(50) NULL DEFAULT NULL,
 	`is_admin` BIT(1) NULL DEFAULT NULL,
+	`is_active` BIT(1) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )
 COLLATE='utf8_general_ci'
@@ -50,7 +55,7 @@ COLLATE='utf8_general_ci'
 DROP TABLE IF EXISTS `security_admin`;
 CREATE TABLE `security_admin` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50) NULL DEFAULT NULL,
+	`email` VARCHAR(50) NULL DEFAULT NULL,
 	`password` VARCHAR(50) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )
@@ -63,3 +68,11 @@ ALTER TABLE `resident`
 ALTER TABLE `building`
 	ADD CONSTRAINT `fk_building_package_unit` FOREIGN KEY (`id`) REFERENCES `package_unit` (`id`);
 
+ALTER TABLE `resident`
+	ADD UNIQUE INDEX `email` (`email`);
+
+ALTER TABLE `security_admin`
+	ADD UNIQUE INDEX `email` (`email`);
+
+ALTER TABLE `building`
+	ADD UNIQUE INDEX `address` (`address`);

@@ -7,12 +7,17 @@ type Resident {
   name: String
   phoneNumber: String
   packageUnit: [PackageUnit]
+  isSmsNotification
+  isEmailNotification
+  smsNotificationSent
+  emailNotificationSent
 }
 
 type ActiveSession {
   id: ID
   privateKey: String
   isAdmin: Boolean
+  isActive: Boolean
 }
 
 type PackageUnit {
