@@ -6,32 +6,25 @@ type Resident {
   password: String
   name: String
   phoneNumber: String
-  user: Building!
   packageUnit: [PackageUnit]
 }
 
 type ActiveSession {
   id: ID
   privateKey: String
+  isAdmin: Boolean
 }
 
 type PackageUnit {
   id: ID
   code: String
   packageIsDelivered: Boolean
-  resident: Resident!
-  building: Building!
 }
 
 type Building {
   id: ID
   address: String
   packageUnit: [PackageUnit]
-}
-
-type User {
-  id: ID
-  name: String
 }
 
 type SecurityAdmin {
