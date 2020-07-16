@@ -77,3 +77,26 @@ Note:
 * I would create a PUT /user/notifications/:sms&:email that updates the notifications settings for a user
 * I would create the DELETE endpoints for /building/:buildingAddress, /user/:email, /building/packageunit/:buildingAddress&:packageUnit
 4. The notification task api is a script deployed separately that's called after every X time. It would check all residents who have enabled notifications in the database and send them the proper type of notification and finally set the proper smsNotificationSent of emailNotificationSent to 1 to avoid sending again for that user.
+
+## Notes on linting
+I installed installed ESLint VS Code extension that enables formatting of JavaScript code. For reference, I'm mostly following [this guide](https://www.robinwieruch.de/prettier-eslint). 
+
+I will use the default linting conventions from the extension called Prettier.
+
+        npm install prettier eslint
+
+I will eslint-config-prettier and eslint-plugin-prettier in the project in order for ESLint to use Prettier's formsatting.
+
+        npm install --save-dev eslint-config-prettier eslint-plugin-prettier        
+
+I will add the following settings in a file called .eslintrc.json which is read by ESLint to configure it and tell it to use prettier properly:
+
+        {
+            "extends": ["prettier"],
+            "plugins": ["prettier"],
+            "rules": {
+                "prettier/prettier": ["error"]
+            }
+        }
+
+I can now use formatting on JavaScript files and have the formatting rules follow Prettier standard configuration. An alert window could warn you that you're about to use a local installation of eslint if you also have a global installation of eslint in your work environment. Just click allow.
