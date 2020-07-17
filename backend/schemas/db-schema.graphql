@@ -1,39 +1,39 @@
 type Resident {
-  id: ID
-  address: String
-  unitNumber: String
-  email: String
-  password: String
-  name: String
-  phoneNumber: String
-  packageUnit: [PackageUnit]
-  isSmsNotification
-  isEmailNotification
-  smsNotificationSent
-  emailNotificationSent
+  id: ID!
+  address: String!
+  unitNumber: String!
+  email: String! @unique
+  password: String!
+  name: String!
+  phoneNumber: String!
+  packageUnit: [PackageUnit]!
+  isSmsNotification!
+  isEmailNotification!
+  smsNotificationSent!
+  emailNotificationSent!
 }
 
 type ActiveSession {
-  id: ID
-  privateKey: String
-  isAdmin: Boolean
-  isActive: Boolean
+  id: ID!
+  privateKey: String!
+  isAdmin: Boolean!
+  isActive: Boolean!
 }
 
 type PackageUnit {
-  id: ID
-  code: String
-  packageIsDelivered: Boolean
+  id: ID!
+  code: String!
+  packageIsDelivered: Boolean!
 }
 
 type Building {
-  id: ID
-  address: String
-  packageUnit: [PackageUnit]
+  id: ID!
+  address: String!
+  packageUnit: [PackageUnit]!
 }
 
 type SecurityAdmin {
-  id: ID
-  email: String
-  password: String
+  id: ID!
+  email: String! @unique
+  password: String!
 }
