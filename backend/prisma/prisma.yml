@@ -1,0 +1,17 @@
+endpoint: '' # Http endpoint required here. Can be used to update model by checking changes on the database schema.
+
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client/
+
+# This datamodel can be used with the command npx prisma generate to generate a client library. Make sure it is up-to-date.
+datamodel: /datamodel.graphql
+
+# Scripts I might use depending on where I deploy (this is confirguration for AWS, I have to validate for Google Cloud)
+# hooks:
+#     post-deploy:
+#       - prisma generate
+#       - npx nexus-prisma-generate --client ./src/generated/prisma-client --output ./src/generated/nexus-prisma
+  
+# seed:
+#   run: npm run seedData

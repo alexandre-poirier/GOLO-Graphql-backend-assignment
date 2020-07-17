@@ -3,11 +3,13 @@
 
 Let me first be transparent by letting you know I don't know yet how build a proper CI/CD using .yaml configuration. I do know how to manually deploy all the technologies that I'll be mentioning here and know where to find the documentation on how to build the said .yaml file to automate the build and might try to do so if I have enough time.
 
-I will be building the backend using [graphql-yoga](https://github.com/prisma-labs/graphql-yoga). It's built on top of the lightweight express backend server, apollo-server and graphql-js and it should make the creation of the backend much easier.
+I will be building the backend using [apollo-server](https://www.apollographql.com/docs/apollo-server/). It integrates well with GraphQL, it's very lightweight and the documentation about how to use it is clear.
 
-Prisma 2 will be used as a client that translate our GraphQL requests to our MySQL database. I will also generate the schema of the database by using prisma's generate cli tool. I will use Nexus' [SDL Converter tool](https://nexus.js.org/converter) to convert the simple graphql into its corresponding Nexus' typescript code. 
+Prisma 2 will be used as a client that translate our GraphQL requests to our MySQL database. I will also use Nexus as a plugin for Prisma to help generate a typed definitions of my graphql model. I will be using a sqlite database for development purposes but will use MySQL for production. 
 
-Note that as the project would evolves, the schema would be updated by calling makeSchema from Nexus on the updated corresponding Nexus typed functions. 
+The database content will be seeded via a data-seed utility script.
+
+Note that as the project will evolve, the schema will be updated by calling makeSchema from Nexus on the updated .graphql file and its corresponding generated library. This makes it possible to make the application evolve using a code-first approach instead of the normal schema-first approach of GraphQL as the all the subscription and mutation types will be maintained by code. 
 
 I will use supertest / jest / mocha to test the backend.
 
@@ -89,15 +91,7 @@ I will eslint-config-prettier and eslint-plugin-prettier in the project in order
 
         npm install --save-dev eslint-config-prettier eslint-plugin-prettier        
 
-I will add the following settings in a file called .eslintrc.json which is read by ESLint to configure it and tell it to use prettier properly:
-
-        {
-            "extends": ["prettier"],
-            "plugins": ["prettier"],
-            "rules": {
-                "prettier/prettier": ["error"]
-            }
-        }
+I will add a proper configuration for eslint in a file called .eslintrc.json.
 
 I can now use formatting on JavaScript files and have the formatting rules follow Prettier standard configuration. An alert window could warn you that you're about to use a local installation of eslint if you also have a global installation of eslint in your work environment. Just click allow.
 
@@ -105,10 +99,10 @@ I can now use formatting on JavaScript files and have the formatting rules follo
 
 The GraphQL programming paradigm involves something different from a standard REST backend. I will be creating the following POST endoints that will enable the client to retrieve, modify, create or delete resources on the same endpoint by respecting the GraphQL schema definition (if it has the required rights of course):
 
-POST /building
-POST /user
-POST /package
-POST /login
+* POST /building
+* POST /user
+* POST /package
+* POST /login
 
 ## Notes on authentication and authorization
 
@@ -117,3 +111,27 @@ I will be using express-jwt for the authentication + authorization of the backen
 The jwt token will be created only if comparing the hash of the email + password is the same hash as the one in the database. 
 
 I will be using aes256 as a hashing method as it's a rather secure encryption standard.
+
+## Notes on running the backend (and creating the initial database)
+
+Install the dependencies:
+
+        npm i
+
+Install the client generated library (based off of the initial datamodel.graphql):
+
+        npx prisma generate
+
+Create an up-to-date schema (based on the client lib + code coming from schema.js):
+
+        npm run createSchema
+
+You can then seed data using (from the backend folder):
+
+        npm run seedData (not done yet)
+
+You can simply run the backend tp visualize the data and use the playground by using:
+
+        npm start
+
+Then go to http://localhost:4000

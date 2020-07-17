@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource postgresql {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Resident {
+  address               String
+  buildingId            Int
+  email                 String        @unique
+  emailNotificationSent Boolean
+  id                    Int           @default(autoincrement()) @id
+  isEmailNotification   Boolean
+  isSmsNotification     Boolean
+  name                  String
+  password              String
+  phoneNumber           String
+  smsNotificationSent   Boolean
+  unitNumber            String
+  Building              Building      @relation(fields: [buildingId], references: [id])
+  PackageUnit           PackageUnit[]
+}
+
+model ActiveSession {
+  id         Int     @default(autoincrement()) @id
+  isActive   Boolean
+  isAdmin    Boolean
+  privateKey String  @unique
+}
+
+model PackageUnit {
+  buildingId         Int
+  code               String
+  id                 Int      @default(autoincrement()) @id
+  packageIsDelivered Boolean
+  residentId         Int
+  Building           Building @relation(fields: [buildingId], references: [id])
+  Resident           Resident @relation(fields: [residentId], references: [id])
+}
+
+model Building {
+  address     String
+  id          Int           @default(autoincrement()) @id
+  Resident    Resident[]
+  PackageUnit PackageUnit[]
+}
+
+model SecurityAdmin {
+  email    String @unique
+  id       Int    @default(autoincrement()) @id
+  password String
+}

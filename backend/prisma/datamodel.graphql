@@ -6,16 +6,17 @@ type Resident {
   password: String!
   name: String!
   phoneNumber: String!
-  packageUnit: [PackageUnit]!
-  isSmsNotification!
-  isEmailNotification!
-  smsNotificationSent!
-  emailNotificationSent!
+  packageUnit: [PackageUnit!]!
+  building: Building!
+  isSmsNotification: Boolean!
+  isEmailNotification: Boolean!
+  smsNotificationSent: Boolean!
+  emailNotificationSent: Boolean!
 }
 
 type ActiveSession {
   id: ID!
-  privateKey: String!
+  privateKey: String! @unique
   isAdmin: Boolean!
   isActive: Boolean!
 }
@@ -24,12 +25,15 @@ type PackageUnit {
   id: ID!
   code: String!
   packageIsDelivered: Boolean!
+  resident: Resident!
+  building: Building!
 }
 
 type Building {
   id: ID!
   address: String!
-  packageUnit: [PackageUnit]!
+  packageUnit: [PackageUnit!]
+  resident: [Resident!]
 }
 
 type SecurityAdmin {
