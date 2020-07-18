@@ -5,15 +5,19 @@
   "scripts": {
     "start": "node ./src/server.js",
     "seedData": "node ./prisma/data-seed.js",
-    "updateSchema": "node ./src/schema.js"
+    "updateSchema": "node ./src/schema.js",
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@prisma/client": "^2.2.2",
     "apollo-server": "^2.16.0",
+    "apollo-server-testing": "^2.16.0",
     "axios": "^0.19.2",
     "debug": "~2.6.9",
     "eslint": "^7.4.0",
     "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
     "nexus": "^0.25.0",
     "nexus-plugin-prisma": "^0.16.1",
     "prettier": "^2.0.5",
@@ -22,6 +26,14 @@
   "devDependencies": {
     "@prisma/cli": "^2.2.2",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4"
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.1.0",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
