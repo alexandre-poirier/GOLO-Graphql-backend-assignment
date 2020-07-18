@@ -85,11 +85,11 @@ I installed installed ESLint VS Code extension that enables formatting of JavaSc
 
 I will use the default linting conventions from the extension called Prettier.
 
-        npm install prettier eslint
+    npm install prettier eslint
 
 I will eslint-config-prettier and eslint-plugin-prettier in the project in order for ESLint to use Prettier's formsatting.
 
-        npm install --save-dev eslint-config-prettier eslint-plugin-prettier        
+    npm install --save-dev eslint-config-prettier eslint-plugin-prettier        
 
 I will add a proper configuration for eslint in a file called .eslintrc.json.
 

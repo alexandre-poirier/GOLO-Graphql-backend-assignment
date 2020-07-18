@@ -1,29 +1,22 @@
-const axios = require("axios");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-let createBuildingRequest1 = {
-  operationName: null,
-  variables: {},
-  query:
-    'mutation {  createBuilding(address: "111 special street") {    id  }}',
-};
-let createBuildingRequest2 = {
-  operationName: null,
-  variables: {},
-  query:
-    'mutation {  createBuilding(address: "222 special street") {    id  }}',
-};
+async function seed() {
+  let newBuilding1 = await prisma.building.create({
+    data: {
+      address: "123 special street"
+    }
+  });
+  
+  let newBuilding2 = await prisma.building.create({
+    data: {
+      address: "456 special street"
+    }
+  });
+}
 
-let doRequest = (jsonRequest) => {
-  axios
-    .post("http://localhost:4000", jsonRequest)
-    .then((res) => {
-      console.log(`statusCode: ${res.statusCode}`);
-      // console.log(res);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-
-doRequest(createBuildingRequest1);
-doRequest(createBuildingRequest2);
+seed()
+  .catch(e => console.error(e))
+  .finally(async () => {
+    await prisma.disconnect();
+  });
