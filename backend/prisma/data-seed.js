@@ -1,12 +1,29 @@
-const { prisma } = require("../src/generated/prisma-client");
+const axios = require("axios");
 
-
-//TODO: Build/adjust it using the live server? Or create an sqlite db file + a .sql file?
-
-//To review
-let createDataSeed = async () => {
-  await prisma.createBuilding({address: "w45h"});
-  
+let createBuildingRequest1 = {
+  operationName: null,
+  variables: {},
+  query:
+    'mutation {  createBuilding(address: "111 special street") {    id  }}',
+};
+let createBuildingRequest2 = {
+  operationName: null,
+  variables: {},
+  query:
+    'mutation {  createBuilding(address: "222 special street") {    id  }}',
 };
 
-createDataSeed()
+let doRequest = (jsonRequest) => {
+  axios
+    .post("http://localhost:4000", jsonRequest)
+    .then((res) => {
+      console.log(`statusCode: ${res.statusCode}`);
+      // console.log(res);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+doRequest(createBuildingRequest1);
+doRequest(createBuildingRequest2);

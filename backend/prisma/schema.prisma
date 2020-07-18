@@ -2,14 +2,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource postgresql {
+datasource sqlite  {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
 
 model Resident {
   address               String
-  buildingId            Int
+  buildingId            Int?
   email                 String        @unique
   emailNotificationSent Boolean
   id                    Int           @default(autoincrement()) @id
@@ -20,7 +20,7 @@ model Resident {
   phoneNumber           String
   smsNotificationSent   Boolean
   unitNumber            String
-  Building              Building      @relation(fields: [buildingId], references: [id])
+  Building              Building?      @relation(fields: [buildingId], references: [id])
   PackageUnit           PackageUnit[]
 }
 
@@ -32,13 +32,13 @@ model ActiveSession {
 }
 
 model PackageUnit {
-  buildingId         Int
+  buildingId         Int?
   code               String
   id                 Int      @default(autoincrement()) @id
   packageIsDelivered Boolean
-  residentId         Int
-  Building           Building @relation(fields: [buildingId], references: [id])
-  Resident           Resident @relation(fields: [residentId], references: [id])
+  residentId         Int?
+  Building           Building? @relation(fields: [buildingId], references: [id])
+  Resident           Resident? @relation(fields: [residentId], references: [id])
 }
 
 model Building {

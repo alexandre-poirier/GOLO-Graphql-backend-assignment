@@ -97,12 +97,7 @@ I can now use formatting on JavaScript files and have the formatting rules follo
 
 ## Notes on the endpoints of the backend
 
-The GraphQL programming paradigm involves something different from a standard REST backend. I will be creating the following POST endoints that will enable the client to retrieve, modify, create or delete resources on the same endpoint by respecting the GraphQL schema definition (if it has the required rights of course):
-
-* POST /building
-* POST /user
-* POST /package
-* POST /login
+The GraphQL programming paradigm involves something different from a standard REST backend. I will be creating the following 1 endpoint ("/") that will enable the client to retrieve, modify, create or delete resources by respecting the GraphQL schema definition (if it has the required rights of course).
 
 ## Notes on authentication and authorization
 
@@ -116,22 +111,34 @@ I will be using aes256 as a hashing method as it's a rather secure encryption st
 
 Install the dependencies:
 
-        npm i
+    npm i
 
-Install the client generated library (based off of the initial datamodel.graphql):
+Install the client generated library (based off of the initial datamodel.graphql). This will also generate the schema that the server will actually use:
 
-        npx prisma generate
+    npx prisma generate
 
-Create an up-to-date schema (based on the client lib + code coming from schema.js):
+Create your database (say yes to create dev.db and give a name to the migration)
 
-        npm run createSchema
+    npx prisma migrate save --experimental
+    npx prisma migrate up --experimental
+
+You can simply run the backend and use the playground by using:
+
+    npm start
+
+Then go to http://localhost:4000
 
 You can then seed data using (from the backend folder):
 
-        npm run seedData (not done yet)
+    npm run seedData
 
-You can simply run the backend tp visualize the data and use the playground by using:
+You should be able to visualize the data being added by using:
 
-        npm start
+    npx prisma studio --experimental
 
-Then go to http://localhost:4000
+And then going to https://localhost:5555
+
+You can use the following command to simply update the generated schema without having to start the backend:
+
+    npm run updateSchema
+

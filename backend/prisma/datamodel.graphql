@@ -1,13 +1,36 @@
+# Use the content of this file on the SDL converter here: https://nexus.js.org/converter
+# This file is used only help kickstart the schema. Make sure its model types correspond to the ones in schema.prisma
+# type Query {
+#   allPackagesForBuilding(id: ID!): [PackageUnit]
+#   getResidentByEmail(email: String!): Resident
+#   getSecurityAdminByEmail(email: String!): SecurityAdmin
+#   getSessionByKey(privateKey: String!): ActiveSession
+# }
+
+# type Mutation {
+#   createResident(address: String!, unitNumber: String!, email: String!, password: String!, name: String!, phoneNumber: String!, isSmsNotification: Boolean!, isEmailNotification: Boolean!, smsNotificationSent: Boolean!, emailNotificationSent: Boolean!): Resident
+#   createActiveSession(privateKey: String!, isAdmin: String!, isActive: Boolean!): ActiveSession
+#   createPackageUnit(code: String!, packageIsDelivered: Boolean!): PackageUnit
+#   createBuilding(address: String!): Building
+#   createSecurityAdmin(address: String!, email: String!, password: String!): SecurityAdmin
+#   addPackagesToResident(idResident: ID!, idPackages: [ID!]!): [PackageUnit!]
+#   addResidentsToBuilding(idResidents: [ID!]!, idBuilding: ID!): [Resident!]
+# }
+
+# type Subscription {
+#   packageUnitDelivered(id: ID!): PackageUnit
+# }
+
 type Resident {
   id: ID!
   address: String!
   unitNumber: String!
-  email: String! @unique
+  email: String! #@unique # This property will need to enforced manually in the Mutation types. The SDL converter does not support it. 
   password: String!
   name: String!
   phoneNumber: String!
-  packageUnit: [PackageUnit!]!
-  building: Building!
+  packageUnit: [PackageUnit]!
+  building: Building
   isSmsNotification: Boolean!
   isEmailNotification: Boolean!
   smsNotificationSent: Boolean!
@@ -16,7 +39,7 @@ type Resident {
 
 type ActiveSession {
   id: ID!
-  privateKey: String! @unique
+  privateKey: String! #@unique # This property will need to enforced manually in the Mutation types. The SDL converter does not support it. 
   isAdmin: Boolean!
   isActive: Boolean!
 }
@@ -25,19 +48,20 @@ type PackageUnit {
   id: ID!
   code: String!
   packageIsDelivered: Boolean!
-  resident: Resident!
-  building: Building!
+  resident: Resident
+  building: Building
 }
 
 type Building {
   id: ID!
   address: String!
-  packageUnit: [PackageUnit!]
-  resident: [Resident!]
+  packageUnit: [PackageUnit]!
+  resident: [Resident]!
 }
 
 type SecurityAdmin {
   id: ID!
-  email: String! @unique
+  email: String! #@unique # This property will need to enforced manually in the Mutation types. The SDL converter does not support it. 
   password: String!
 }
+
