@@ -2,5 +2,6 @@
 /src/generated/*
 /prisma/migrations/*
 /prisma/Studio/*
-**.db
+/prisma/test_databases/**.db
 /prisma/**.db
+/src/testUtils/test_databases/**.db

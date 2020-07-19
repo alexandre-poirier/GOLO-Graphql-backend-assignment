@@ -7,17 +7,17 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const sign = (id, email, isAdmin, secret) => {
-  return jwt.sign({ id: id, email: email, isAdmin: isAdmin }, secret, {
+const sign = (id, email, isAdmin) => {
+  return jwt.sign({ id: id, email: email, isAdmin: isAdmin }, process.env.JWT_SECRET, {
     expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
     algorithm: "HS512"
   });
 };
 
-const decode = (token, secret) => {
+const decode = (token) => {
   try {
     if (token) {
-      return jwt.verify(token, secret, {algorithms: "HS512"});
+      return jwt.verify(token, process.env.JWT_SECRET, {algorithms: "HS512"});
     }
     return null;
   } catch (err) {

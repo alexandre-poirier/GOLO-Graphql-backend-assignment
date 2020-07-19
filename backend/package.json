@@ -6,7 +6,7 @@
     "start": "node ./src/server.js",
     "seedData": "node ./prisma/data-seed.js",
     "updateSchema": "node ./src/schema.js",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "node ./src/testUtils/cleanup-test-db.js && jest --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "@prisma/client": "^2.2.2",
@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "debug": "~2.6.9",
     "eslint": "^7.4.0",
+    "fs-extra": "^9.0.1",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
     "nanoid": "^3.1.10",
@@ -32,9 +33,10 @@
     "supertest": "^4.0.2"
   },
   "jest": {
-    "testEnvironment": "./prisma/nexus-test-environment.js",
+    "testEnvironment": "./src/testUtils/nexus-test-environment.js",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "setupFiles": ["<rootDir>/.jest/setEnvironmentVars.js"]
   }
 }
