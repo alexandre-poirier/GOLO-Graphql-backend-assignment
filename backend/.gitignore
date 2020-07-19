@@ -2,3 +2,5 @@
 /src/generated/*
 /prisma/migrations/*
 /prisma/Studio/*
+**.db
+/prisma/**.db

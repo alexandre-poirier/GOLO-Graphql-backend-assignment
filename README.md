@@ -109,6 +109,11 @@ I will be using aes256 as a hashing method as it's a rather secure encryption st
 
 ## Notes on running the backend (and creating the initial database)
 
+Make sure to create a .env file within prisma folder that has these two variables defined
+
+    JWT_SECRET=<random long string>
+    DATABASE_URL="<db connection string>"
+
 Install the dependencies:
 
     npm i

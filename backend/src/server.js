@@ -8,7 +8,6 @@
 const { ApolloServer } = require("apollo-server");
 const { schema } = require("./schema");
 const { serverContext } = require("./serverContext");
-const { decode } = require("./identification");
 
 new ApolloServer({
   schema,

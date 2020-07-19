@@ -10,13 +10,14 @@ const crypto = require("crypto");
 const sign = (id, email, isAdmin, secret) => {
   return jwt.sign({ id: id, email: email, isAdmin: isAdmin }, secret, {
     expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
+    algorithm: "HS512"
   });
 };
 
 const decode = (token, secret) => {
   try {
     if (token) {
-      return jwt.verify(token, secret);
+      return jwt.verify(token, secret, {algorithms: "HS512"});
     }
     return null;
   } catch (err) {
