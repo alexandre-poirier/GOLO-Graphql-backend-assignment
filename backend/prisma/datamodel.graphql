@@ -4,12 +4,11 @@
 #   allPackagesForBuilding(id: ID!): [PackageUnit]
 #   getResidentByEmail(email: String!): Resident
 #   getSecurityAdminByEmail(email: String!): SecurityAdmin
-#   getSessionByKey(privateKey: String!): ActiveSession
+#   login(email: String!, isAdmin: String!, password: String!): String
 # }
 
 # type Mutation {
 #   createResident(address: String!, unitNumber: String!, email: String!, password: String!, name: String!, phoneNumber: String!, isSmsNotification: Boolean!, isEmailNotification: Boolean!, smsNotificationSent: Boolean!, emailNotificationSent: Boolean!): Resident
-#   createActiveSession(privateKey: String!, isAdmin: String!, isActive: Boolean!): ActiveSession
 #   createPackageUnit(code: String!, packageIsDelivered: Boolean!): PackageUnit
 #   createBuilding(address: String!): Building
 #   createSecurityAdmin(address: String!, email: String!, password: String!): SecurityAdmin
@@ -35,13 +34,6 @@ type Resident {
   isEmailNotification: Boolean!
   smsNotificationSent: Boolean!
   emailNotificationSent: Boolean!
-}
-
-type ActiveSession {
-  id: ID!
-  privateKey: String! #@unique # This property will need to enforced manually in the Mutation types. The SDL converter does not support it. 
-  isAdmin: Boolean!
-  isActive: Boolean!
 }
 
 type PackageUnit {

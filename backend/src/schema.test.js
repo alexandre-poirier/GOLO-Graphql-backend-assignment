@@ -11,6 +11,8 @@ const server = new ApolloServer({
 
 const { mutate } = createTestClient(server);
 
+
+
 describe("Tests Building functionality", () => {
   test("sends createBuilding request 1", async (done) => {
 

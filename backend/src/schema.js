@@ -21,15 +21,6 @@ use(prismaPlugin());
 
 // The following types were generated using https://nexus.js.org/converter.
 // The resolvers were implemented using the generated client library from schema.prisma
-const ActiveSession = objectType({
-  name: "ActiveSession",
-  definition(t) {
-    t.id("id");
-    t.string("privateKey");
-    t.boolean("isAdmin");
-    t.boolean("isActive");
-  },
-});
 const Building = objectType({
   name: "Building",
   definition(t) {
@@ -62,15 +53,6 @@ const Mutation = objectType({
         isEmailNotification: booleanArg({ required: true }),
         smsNotificationSent: booleanArg({ required: true }),
         emailNotificationSent: booleanArg({ required: true }),
-      },
-    });
-    t.field("createActiveSession", {
-      type: ActiveSession,
-      nullable: true,
-      args: {
-        privateKey: stringArg({ required: true }),
-        isAdmin: stringArg({ required: true }),
-        isActive: booleanArg({ required: true }),
       },
     });
     t.field("createPackageUnit", {
@@ -163,11 +145,12 @@ const Query = objectType({
         email: stringArg({ required: true }),
       },
     });
-    t.field("getSessionByKey", {
-      type: ActiveSession,
+    t.string("login", {
       nullable: true,
       args: {
-        privateKey: stringArg({ required: true }),
+        email: stringArg({ required: true }),
+        isAdmin: stringArg({ required: true }),
+        password: stringArg({ required: true }),
       },
     });
   },
@@ -218,15 +201,7 @@ const Subscription = objectType({
 });
 
 const schema = makeSchema({
-  types: [
-    ActiveSession,
-    Building,
-    Resident,
-    SecurityAdmin,
-    Query,
-    Mutation,
-    Subscription,
-  ],
+  types: [Building, Resident, SecurityAdmin, Query, Mutation, Subscription],
   outputs: {
     schema: path.join(__dirname, "./generated/shema.graphql"),
     typegen: path.join(__dirname, "./generated/nexus.ts"),
@@ -243,5 +218,5 @@ const schema = makeSchema({
 });
 
 module.exports = {
-  schema
-}
+  schema,
+};
