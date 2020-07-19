@@ -44,10 +44,6 @@ class PrismaTestEnvironment extends NodeEnvironment {
     this.global.process.env.DATABASE_URL = this.databaseUrl;
     this.global.process.env.DB_FILE = this.db_file;
 
-    // We setup a variable to bypass the jwt authentication. Set this to false if you need to test a more login + call flow with jwt.
-    process.env.BYPASS_AUTH = true;
-    this.global.process.env.BYPASS_AUTH = true;
-
     // Run the migrations to ensure our schema has the required structure
     await exec(`${prismaBinary} migrate up --create-db --experimental`);
     return super.setup();

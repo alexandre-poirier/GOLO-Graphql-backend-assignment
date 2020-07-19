@@ -14,6 +14,8 @@ const { mutate } = createTestClient(server);
 
 describe("Tests Building functionality", () => {
   test("sends createBuilding request 1", async (done) => {
+    
+    process.env.BYPASS_AUTH = true;
 
     const CREATE_BUILDING = gql`
       mutation CreateBuilding($address: String!) {
@@ -22,7 +24,6 @@ describe("Tests Building functionality", () => {
         }
       }
     `;
-
     const res = await mutate({
       mutation: CREATE_BUILDING,
       variables: { address: "123 test street" },
@@ -32,7 +33,8 @@ describe("Tests Building functionality", () => {
     done();
   });
 
-  test("sends createBuilding request 2", async (done) => {
+  test("sends createBuilding request and gets blocked by security", async (done) => {
+    delete process.env.BYPASS_AUTH;
 
     const CREATE_BUILDING = gql`
       mutation CreateBuilding($address: String!) {
@@ -41,7 +43,25 @@ describe("Tests Building functionality", () => {
         }
       }
     `;
+    const res = await mutate({
+      mutation: CREATE_BUILDING,
+      variables: { address: "123 test street" },
+    });
+    expect(res.errors).toBe(undefined);
+    expect(res.data.createBuilding).toEqual(null);
+    done();
+  });
 
+  test("sends createBuilding request 2", async (done) => {
+    process.env.BYPASS_AUTH = true;
+    
+    const CREATE_BUILDING = gql`
+      mutation CreateBuilding($address: String!) {
+        createBuilding(address: $address) {
+          address
+        }
+      }
+    `;
     const res = await mutate({
       mutation: CREATE_BUILDING,
       variables: { address: "456 test street" },
