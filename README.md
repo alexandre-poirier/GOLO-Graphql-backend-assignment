@@ -132,7 +132,7 @@ Create your database (say yes to create dev.db and give a name to the migration)
 
 You can simply run the backend and use the playground by using:
 
-    npm start
+    npm run startDev
 
 Then go to http://localhost:4000
 
@@ -150,3 +150,8 @@ You can use the following command to simply update the generated schema without 
 
     npm run updateSchema
 
+## Notes on deployment
+
+To deploy on Google App Engine, install [gcloud](https://cloud.google.com/sdk/install) and then run:
+
+    gcloud app deploy --project=<project name> --version=<version> --no-promote

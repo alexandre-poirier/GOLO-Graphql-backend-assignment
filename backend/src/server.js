@@ -5,14 +5,16 @@
  *
  */
 // Adds secrets from your root .env file. Don't forget to define JWT_SECRET
-require('dotenv').config({ path: './.env' });
+require("dotenv").config({ path: "./.env" });
 const { ApolloServer } = require("apollo-server");
 const { schema } = require("./schema");
 const { serverContext } = require("./serverContext");
 
+const port = process.env.PORT || 8080;
+
 new ApolloServer({
   schema,
   context: serverContext,
-}).listen({ port: 4000 }, () =>
-  console.log(`Server ready at: http://localhost:4000`)
-);
+}).listen({ port: port }, () => {
+  console.log(`Server ready at: http://localhost:${port}`);
+});
