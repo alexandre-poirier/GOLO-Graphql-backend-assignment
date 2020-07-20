@@ -152,6 +152,4 @@ You can use the following command to simply update the generated schema without 
 
 ## Notes on deployment
 
-To deploy on Google App Engine, install [gcloud](https://cloud.google.com/sdk/install) and then run:
-
-    gcloud app deploy --project=<project name> --version=<version> --no-promote
+Make sure that you have access to a mysql database with a schema name that fits your database url in your .env. See https://www.prisma.io/docs/reference/database-connectors/connection-urls for more details. The deployment is not possible on app engine standard due to restriction on the node_modules folder (we need to install a custom dependency - @prisma/client and that's not possible in that environment).

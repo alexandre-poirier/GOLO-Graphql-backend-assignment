@@ -10,9 +10,9 @@ datamodel: /datamodel.graphql
 
 
 # Scripts I might use depending on where I deploy (this is confirguration for AWS, I have to validate for Google Cloud)
-# hooks:
-#     post-deploy:
-#       - prisma generate
+hooks:
+    post-deploy:
+      - prisma generate
   
 # seed:
 #   run: npm run seedData

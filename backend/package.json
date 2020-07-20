@@ -38,6 +38,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "setupFiles": ["<rootDir>/.jest/setEnvironmentVars.js"]
+    "setupFiles": [
+      "<rootDir>/.jest/setEnvironmentVars.js"
+    ]
   }
 }
