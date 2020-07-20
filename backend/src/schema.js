@@ -62,6 +62,7 @@ const Mutation = objectType({
         code: stringArg({ required: true }),
         packageIsDelivered: booleanArg({ required: true }),
       },
+      resolve: resolvers.createPackageUnit,
     });
     t.field("createBuilding", {
       type: Building,
@@ -75,10 +76,10 @@ const Mutation = objectType({
       type: SecurityAdmin,
       nullable: true,
       args: {
-        address: stringArg({ required: true }),
         email: stringArg({ required: true }),
         password: stringArg({ required: true }),
       },
+      resolve: resolvers.createSecurityAdmin,
     });
     t.list.field("addPackagesToResident", {
       type: PackageUnit,
