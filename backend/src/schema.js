@@ -54,6 +54,7 @@ const Mutation = objectType({
         smsNotificationSent: booleanArg({ required: true }),
         emailNotificationSent: booleanArg({ required: true }),
       },
+      resolve: resolvers.createResident
     });
     t.field("createPackageUnit", {
       type: PackageUnit,
@@ -150,9 +151,10 @@ const Query = objectType({
       nullable: true,
       args: {
         email: stringArg({ required: true }),
-        isAdmin: stringArg({ required: true }),
+        isAdmin: booleanArg({ required: true }),
         password: stringArg({ required: true }),
       },
+      resolve: resolvers.login
     });
   },
 });

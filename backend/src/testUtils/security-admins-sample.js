@@ -2,13 +2,13 @@ const { nanoid } = require("nanoid");
 
 let securityAdmins = [];
 
-let getUniqueEmail = () => {
-  let uniqueEmail = `${nanoid(15)}@example.com`;
-  securityAdmins.push(uniqueEmail);
-  return uniqueEmail;
+let getSecurityAdmin = () => {
+  let securityAdmin = {email: `${nanoid(15)}@example.com`, password: "1234"};
+  securityAdmins.push(securityAdmin);
+  return securityAdmin;
 }
 
 module.exports = {
   securityAdmins,
-  getUniqueEmail,
+  getSecurityAdmin,
 };
