@@ -5,3 +5,4 @@
 /prisma/test_databases/**.db
 /prisma/**.db
 /src/testUtils/test_databases/**.db
+/.serverless/*
