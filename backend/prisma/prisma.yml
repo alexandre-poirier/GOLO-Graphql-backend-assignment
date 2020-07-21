@@ -16,3 +16,4 @@ hooks:
   
 # seed:
 #   run: npm run seedData
+#   import: <file>.graphql # See https://github.com/jgeschwendt/serverless-prisma/blob/master/database/seed.graphql for example

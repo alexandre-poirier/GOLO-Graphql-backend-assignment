@@ -6,19 +6,25 @@ const buildinsSample = require("./testUtils/building-sample").buildings;
 const packageUnits = require("./testUtils/package-units-sample").packageUnits;
 const identificationService = require("./identification");
 const {
-  securityAdmins,
-  getSecurityAdmin,
-} = require("./testUtils/security-admins-sample");
-const {
   getUniqueResident,
   residents,
   getStaticResident
 } = require("./testUtils/residents-sample");
-const { nanoid } = require("nanoid");
 const server = new ApolloServer({
   context: createContext,
   schema: schema,
   mockEntireSchema: false,
+});
+
+const OLD_ENV = process.env;
+
+beforeEach(() => {
+  jest.resetModules();
+  process.env = { ...OLD_ENV };
+});
+
+afterAll(() => {
+  process.env = OLD_ENV;
 });
 
 const { mutate, query } = createTestClient(server);
@@ -40,44 +46,6 @@ describe("Tests Building functionality", () => {
     });
     expect(res.errors).toBe(undefined);
     expect(res.data.createBuilding).toEqual(buildinsSample[0]);
-    done();
-  });
-
-  test("sends createBuilding request and gets blocked by security", async (done) => {
-    delete process.env.BYPASS_AUTH;
-
-    const CREATE_BUILDING = gql`
-      mutation CreateBuilding($address: String!) {
-        createBuilding(address: $address) {
-          address
-        }
-      }
-    `;
-    const res = await mutate({
-      mutation: CREATE_BUILDING,
-      variables: { address: "123 test street" },
-    });
-    expect(res.errors).toBe(undefined);
-    expect(res.data.createBuilding).toEqual(null);
-    done();
-  });
-
-  test("sends createBuilding request 2", async (done) => {
-    process.env.BYPASS_AUTH = true;
-
-    const CREATE_BUILDING = gql`
-      mutation CreateBuilding($address: String!) {
-        createBuilding(address: $address) {
-          address
-        }
-      }
-    `;
-    const res = await mutate({
-      mutation: CREATE_BUILDING,
-      variables: { address: "456 test street" },
-    });
-    expect(res.errors).toBe(undefined);
-    expect(res.data.createBuilding).toEqual(buildinsSample[1]);
     done();
   });
 });
@@ -106,54 +74,6 @@ describe("Tests Package functionality", () => {
     });
     expect(res.errors).toBe(undefined);
     expect(res.data.createPackageUnit).toEqual(packageUnits[0]);
-    done();
-  });
-
-  test("sends createPackageUnit request and gets blocked by security", async (done) => {
-    delete process.env.BYPASS_AUTH;
-
-    const CREATE_PACKAGE_UNIT = gql`
-      mutation CreatePackageUnit(
-        $code: String!
-        $packageIsDelivered: Boolean!
-      ) {
-        createPackageUnit(
-          code: $code
-          packageIsDelivered: $packageIsDelivered
-        ) {
-          packageIsDelivered
-          code
-        }
-      }
-    `;
-    const res = await mutate({
-      mutation: CREATE_PACKAGE_UNIT,
-      variables: { code: "222", packageIsDelivered: false },
-    });
-    expect(res.errors).toBe(undefined);
-    expect(res.data.createPackageUnit).toEqual(null);
-    done();
-  });
-});
-
-describe("Tests Security admin functionality", () => {
-  test("sends createSecurityAdmin request 1", async (done) => {
-
-    const CREATE_SECURITY_ADMIN = gql`
-      mutation CreateSecurityAdmin($email: String!, $password: String!) {
-        createSecurityAdmin(email: $email, password: $password) {
-          email
-        }
-      }
-    `;
-    const res = await mutate({
-      mutation: CREATE_SECURITY_ADMIN,
-      variables: getSecurityAdmin(),
-    });
-    expect(res.errors).toBe(undefined);
-    expect(res.data.createSecurityAdmin).toEqual({
-      email: securityAdmins[0].email,
-    });
     done();
   });
 });
@@ -201,6 +121,7 @@ describe("Tests Resident functionality", () => {
   });
 
   test("creates a resident request and uses login", async (done) => {
+    process.env.BYPASS_AUTH = true;
 
     let staticResident = getStaticResident();
 
@@ -259,7 +180,6 @@ describe("Tests Resident functionality", () => {
       query: LOGIN,
       variables: {email: staticResident.email, password: staticResident.password, isAdmin: false}
     });
-    console.log(res2.data.login);
     expect(res2.errors).toBe(undefined);
     expect(identificationService.decode(res2.data.login).email).toEqual(residents[1].email);
 

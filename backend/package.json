@@ -2,6 +2,9 @@
   "name": "backend",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "12.x.x"
+  },
   "scripts": {
     "start": "set NODE_ENV=production && node ./src/server.js",
     "startDev": "set NODE_ENV=development && node ./src/server.js",
@@ -10,27 +13,27 @@
     "test": "node ./src/testUtils/cleanup-test-db.js && jest --detectOpenHandles --forceExit"
   },
   "dependencies": {
-    "@prisma/client": "^2.2.2",
+    "@prisma/client": "^2.1.3",
     "apollo-server": "^2.16.0",
-    "apollo-server-testing": "^2.16.0",
-    "axios": "^0.19.2",
-    "debug": "~2.6.9",
-    "eslint": "^7.4.0",
+    "apollo-server-lambda": "^2.16.0",
     "fs-extra": "^9.0.1",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
-    "nanoid": "^3.1.10",
     "nexus": "^0.25.0",
     "nexus-plugin-prisma": "^0.16.1",
-    "prettier": "^2.0.5",
-    "prisma-client-lib": "^1.34.10",
-    "sqlite3": "^5.0.0"
+    "prisma-client-lib": "^1.34.10"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.2.2",
+    "@prisma/cli": "^2.1.3",
+    "apollo-server-testing": "^2.16.0",
+    "debug": "~2.6.9",
+    "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.1.0",
+    "nanoid": "^3.1.10",
+    "prettier": "^2.0.5",
+    "sqlite3": "^5.0.0",
     "supertest": "^4.0.2"
   },
   "jest": {

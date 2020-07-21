@@ -4,9 +4,7 @@ const identificationService = require("./identification");
 
 let resolvers = {
   createBuilding: (root, args, ctx) => {
-    if (!process.env.BYPASS_AUTH) {
-      if (!ctx.user || !ctx.user.isAdmin) return null;
-    }
+    if (!validateAuthorization(ctx, true)) return null;
 
     return prisma.building.create({
       data: {
@@ -15,9 +13,7 @@ let resolvers = {
     });
   },
   createPackageUnit: (root, args, ctx) => {
-    if (!process.env.BYPASS_AUTH) {
-      if (!ctx.user || !ctx.user.isAdmin) return null;
-    }
+    if (!validateAuthorization(ctx, true)) return null;
 
     return prisma.packageUnit.create({
       data: {
@@ -28,32 +24,23 @@ let resolvers = {
   },
   createSecurityAdmin: (root, args, ctx) => {
     // For addiitonal security, we could make it so that only admins can create admins in a real prod environment. The first administrator would be entered manually in the database.
-    // if (!process.env.BYPASS_AUTH) {
-    //   if (!ctx.user || !ctx.user.isAdmin) return null;
-    // }
-    let hashedPassword = identificationService.createPasswordHash(
-      args.password
-    );
+    // if(!validateAuthorization(ctx, true))
+    //   return null;
 
     return prisma.securityAdmin.create({
       data: {
         email: args.email,
-        password: hashedPassword,
+        password: identificationService.createPasswordHash(args.password),
       },
     });
   },
   createResident: (root, args, ctx) => {
-    if (!process.env.BYPASS_AUTH) {
-      if (!ctx.user || !ctx.user.isAdmin) return null;
-    }
-    let hashedPassword = identificationService.createPasswordHash(
-      args.password
-    );
+    if (!validateAuthorization(ctx, true)) return null;
 
     return prisma.resident.create({
       data: {
         email: args.email,
-        password: hashedPassword,
+        password: identificationService.createPasswordHash(args.password),
         address: args.address,
         emailNotificationSent: args.emailNotificationSent,
         isEmailNotification: args.isEmailNotification,
@@ -120,6 +107,26 @@ let resolvers = {
   },
 };
 
+let validateAuthorization = (context, shouldBeAdmin) => {
+  let authorized = false;
+  if (!process.env.BYPASS_AUTH) {
+    if (context && context.user) {
+      if (shouldBeAdmin) {
+        if (context.user.isAdmin) {
+          authorized = true;
+        }
+      } else {
+        authorized = true;
+      }
+    }
+  } else {
+    authorized = true;
+  }
+
+  return authorized;
+};
+
 module.exports = {
   resolvers,
+  validateAuthorization,
 };
