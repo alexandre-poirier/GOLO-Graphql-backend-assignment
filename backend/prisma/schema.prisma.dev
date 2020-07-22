@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource mysql  {
-  provider = "mysql"
-  url      = env(DATABASE_URL)
+datasource sqlite  {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Resident {

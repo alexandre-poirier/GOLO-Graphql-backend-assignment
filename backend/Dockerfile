@@ -17,4 +17,10 @@ RUN npm install --unsafe-perm || \
   ((if [ -f npm-debug.log ]; then \
       cat npm-debug.log; \
     fi) && false)
+
+RUN npx prisma generate
+
+RUN npx prisma migrate save --experimental
+RUN npx prisma migrate up --experimental
+
 CMD npm start
