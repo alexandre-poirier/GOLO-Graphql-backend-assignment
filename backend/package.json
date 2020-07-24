@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "set NODE_ENV=production && node ./src/server.js",
-    "startDev": "set NODE_ENV=development && node ./src/server.js",
+    "startDev": "set NODE_ENV=development && npx prisma generate --schema=./prisma/schema-dev.prisma && npx prisma migrate save --experimental --schema=./prisma/schema-dev.prisma && npx prisma migrate up --experimental --schema=./prisma/schema-dev.prisma && node ./src/server.js",
     "seedData": "node ./prisma/data-seed.js",
     "updateSchema": "node ./src/schema.js",
     "test": "node ./src/testUtils/cleanup-test-db.js && jest --detectOpenHandles --forceExit"
