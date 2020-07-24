@@ -8,13 +8,13 @@
 require("dotenv").config({ path: "./.env" });
 const { ApolloServer } = require("apollo-server");
 const { schema } = require("./schema");
-const { serverContext } = require("./serverContext");
+const { createContext } = require("./context");
 
 const port = process.env.PORT || 8080;
 
 new ApolloServer({
   schema,
-  context: serverContext,
+  context: createContext,
 }).listen({ port: port }, () => {
   console.log(`Server ready at: http://localhost:${port}`);
 });

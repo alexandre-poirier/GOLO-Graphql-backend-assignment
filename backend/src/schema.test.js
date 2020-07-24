@@ -1,20 +1,20 @@
-const { createContext } = require("./context");
-const { schema } = require("./schema");
-const { ApolloServer, gql } = require("apollo-server");
+
+const { gql } = require("apollo-server");
 const { createTestClient } = require("apollo-server-testing");
 const buildinsSample = require("./testUtils/building-sample").buildings;
 const packageUnits = require("./testUtils/package-units-sample").packageUnits;
 const identificationService = require("./identification");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+const {getSecurityAdmin, getStaticSecurityAdmin, securityAdmins } =require("./testUtils/security-admins-sample")
 const {
   getUniqueResident,
   residents,
   getStaticResident
 } = require("./testUtils/residents-sample");
-const server = new ApolloServer({
-  context: createContext,
-  schema: schema,
-  mockEntireSchema: false,
-});
+
+const { testServer } = require("./testUtils/test-client");
+const { query, mutate } = createTestClient(testServer);
 
 const OLD_ENV = process.env;
 
@@ -26,8 +26,6 @@ beforeEach(() => {
 afterAll(() => {
   process.env = OLD_ENV;
 });
-
-const { mutate, query } = createTestClient(server);
 
 describe("Tests Building functionality", () => {
   test("sends createBuilding request 1", async (done) => {
@@ -123,6 +121,8 @@ describe("Tests Resident functionality", () => {
   test("creates a resident request and uses login", async (done) => {
     process.env.BYPASS_AUTH = true;
 
+    await prisma.resident.deleteMany();
+
     let staticResident = getStaticResident();
 
     const CREATE_RESIDENT = gql`
@@ -183,6 +183,79 @@ describe("Tests Resident functionality", () => {
     expect(res2.errors).toBe(undefined);
     expect(identificationService.decode(res2.data.login).email).toEqual(residents[1].email);
 
+    done();
+  });
+
+  test("creates a security admin request, uses login and uses the same admin to create a package", async (done) => {
+    process.env.BYPASS_AUTH = false;
+
+    await prisma.securityAdmin.deleteMany();
+
+    let staticSecurityAdmin = getStaticSecurityAdmin();
+
+
+
+
+    const CREATE_SECURITY_ADMIN = gql`
+      mutation CreateSecurityAdmin($email: String!, $password: String!) {
+        createSecurityAdmin(email: $email, password: $password) {
+          email
+        }
+      }
+    `;
+
+    const res = await mutate({
+      mutation: CREATE_SECURITY_ADMIN,
+      variables: staticSecurityAdmin,
+    });
+    expect(res.data.createSecurityAdmin).toEqual({
+      email: staticSecurityAdmin.email,
+    });
+
+    const LOGIN = gql`
+      query Login($email: String!, $password: String!, $isAdmin: Boolean!) {
+        login(email: $email, password: $password, isAdmin: $isAdmin)
+      }
+    `;
+
+    const res2 = await query({
+      query: LOGIN,
+      variables: {
+        email: staticSecurityAdmin.email,
+        password: staticSecurityAdmin.password,
+        isAdmin: true,
+      },
+    });
+    expect(res2.errors).toBe(undefined);
+    expect(identificationService.decode(res2.data.login).email).toEqual(
+      staticSecurityAdmin.email
+    );
+
+    testServer.mergeContext({
+      req: { headers: { authorization: res2.data.login } },
+    });
+
+    const CREATE_PACKAGE_UNIT = gql`
+      mutation CreatePackageUnit(
+        $code: String!
+        $packageIsDelivered: Boolean!
+      ) {
+        createPackageUnit(
+          code: $code
+          packageIsDelivered: $packageIsDelivered
+        ) {
+          packageIsDelivered
+          code
+        }
+      }
+    `;
+    const res3 = await mutate({
+      mutation: CREATE_PACKAGE_UNIT,
+      variables: { code: "1113", packageIsDelivered: false },
+    });
+
+    expect(res3.errors).toBe(undefined);
+    expect(res3.data.createPackageUnit).toEqual({ code: "1113", packageIsDelivered: false });
     done();
   });
 });

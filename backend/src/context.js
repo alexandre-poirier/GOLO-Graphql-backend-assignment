@@ -5,11 +5,13 @@
  */
 
 const { prisma } = require("./generated/prisma-client");
+const { decode } = require("./identification");
 
-function createContext() {
-    return { prisma };
+function createContext({req}) {
+  // add the req to the context
+  return { prisma, req };
 }
 
 module.exports = {
-  createContext
+  createContext,
 };

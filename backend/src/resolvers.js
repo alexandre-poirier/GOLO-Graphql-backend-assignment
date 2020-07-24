@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const identificationService = require("./identification");
+const { decode } = require("./identification");
 
 let resolvers = {
   createBuilding: (root, args, ctx) => {
@@ -77,7 +78,7 @@ let resolvers = {
             token = identificationService.sign(
               securityAdmin.id,
               securityAdmin.email,
-              false
+              true
             );
         })
         .catch((err) => {});
@@ -108,11 +109,20 @@ let resolvers = {
 };
 
 let validateAuthorization = (context, shouldBeAdmin) => {
+  let req = context.req;
+
+  let token = "";
+  if(req && req.headers)
+    token = req.headers.authorization || "";
+
+  // try to retrieve a user with the token
+  const user = decode(token);
+
   let authorized = false;
   if (!process.env.BYPASS_AUTH) {
-    if (context && context.user) {
+    if (user) {
       if (shouldBeAdmin) {
-        if (context.user.isAdmin) {
+        if (user.isAdmin) {
           authorized = true;
         }
       } else {
