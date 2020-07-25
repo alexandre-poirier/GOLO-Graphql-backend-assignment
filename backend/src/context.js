@@ -4,7 +4,7 @@
  * License: Apache 2.0 - https://github.com/prisma/prisma-examples/blob/master/LICENSE
  */
 
-const { prisma } = require("./generated/prisma-client");
+const prisma = require("@prisma/client");
 const { decode } = require("./identification");
 
 function createContext({req}) {

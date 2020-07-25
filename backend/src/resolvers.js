@@ -106,14 +106,53 @@ let resolvers = {
     }
     return token;
   },
+  addPackagesToResident: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;
+
+    let idPackageListOfObject = [];
+    args.idPackages.map((idPackage) => {
+      let intIdPackage = parseInt(idPackage);
+      idPackageListOfObject.push({id: intIdPackage});
+    });
+    
+    return prisma.resident.update({
+      where: {
+        id: parseInt(args.idResident),
+      },
+      data: {
+        PackageUnit: {
+          connect: idPackageListOfObject,
+        },
+      }
+    });
+  },
+  addResidentsToBuilding: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;   
+
+    let idResidentListOfObject = [];
+    args.idResidents.map((idResident) => {
+      let intIdResident = parseInt(idResident);
+      idResidentListOfObject.push({id: intIdResident});
+    });
+
+    return prisma.building.update({
+      where: {
+        id: parseInt(args.idBuilding),
+      },
+      data: {
+        Resident: {
+          connect: idResidentListOfObject,
+        },
+      },
+    });
+  },
 };
 
 let validateAuthorization = (context, shouldBeAdmin) => {
   let req = context.req;
 
   let token = "";
-  if(req && req.headers)
-    token = req.headers.authorization || "";
+  if (req && req.headers) token = req.headers.authorization || "";
 
   // try to retrieve a user with the token
   const user = decode(token);

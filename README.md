@@ -169,3 +169,37 @@ Run:
 Your application should be accessible at:
 
     https://VERSION-dot-PROJECT_NAME.appspot.com
+
+## Examples of GraphQL mutation and queries for apollo server playground
+
+    mutation {
+      createSecurityAdmin(email: "test", password: "1234") {
+        email
+      }
+    }
+
+    query {
+      login(email: "test", password: "1234", isAdmin: true)
+    }
+
+    mutation {
+      createPackageUnit(code: "333", packageIsDelivered: false) {
+        code
+        packageIsDelivered
+        id
+      }
+    }
+
+    mutation {
+      createResident(address: "111", unitNumber: "111", email: "4w5htw4",
+        password: "1234", name: "w35rgh", phoneNumber: "345t6", isSmsNotification: false
+      	isEmailNotification: false, smsNotificationSent: false, emailNotificationSent: false) {
+        id
+      }
+    }
+    
+    mutation {
+      addPackagesToResident(idResident: "99", idPackages: ["68", "69"]) {
+        code
+      }
+    }

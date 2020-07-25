@@ -82,8 +82,8 @@ const Mutation = objectType({
       },
       resolve: resolvers.createSecurityAdmin,
     });
-    t.list.field("addPackagesToResident", {
-      type: PackageUnit,
+    t.field("addPackagesToResident", {
+      type: Resident,
       nullable: true,
       args: {
         idResident: idArg({ required: true }),
@@ -92,9 +92,10 @@ const Mutation = objectType({
           required: true,
         }),
       },
+      resolve: resolvers.addPackagesToResident,
     });
-    t.list.field("addResidentsToBuilding", {
-      type: Resident,
+    t.field("addResidentsToBuilding", {
+      type: Building,
       nullable: true,
       args: {
         idResidents: idArg({
@@ -103,6 +104,7 @@ const Mutation = objectType({
         }),
         idBuilding: idArg({ required: true }),
       },
+      resolve: resolvers.addResidentsToBuilding,
     });
   },
 });
@@ -132,6 +134,7 @@ const Query = objectType({
       args: {
         id: idArg({ required: true }),
       },
+      // resolve: resolvers.allPackagesForBuilding,
     });
     t.field("getResidentByEmail", {
       type: Resident,
@@ -139,6 +142,7 @@ const Query = objectType({
       args: {
         email: stringArg({ required: true }),
       },
+      // resolve: resolvers.getResidentByEmail,
     });
     t.field("getSecurityAdminByEmail", {
       type: SecurityAdmin,
@@ -146,6 +150,7 @@ const Query = objectType({
       args: {
         email: stringArg({ required: true }),
       },
+      // resolvers.getSecurityAdminByEmail,
     });
     t.string("login", {
       nullable: true,

@@ -1,4 +1,4 @@
-import { prisma } from './generated/prisma-client';
+import prisma from '@prisma/client';
 
 module.exports = {
   prisma,
