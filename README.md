@@ -174,11 +174,9 @@ Your application should be accessible at:
         email
       }
     }
-
     query {
       login(email: "test", password: "1234", isAdmin: true)
     }
-
     mutation {
       createPackageUnit(code: "333", packageIsDelivered: false) {
         code
@@ -186,17 +184,50 @@ Your application should be accessible at:
         id
       }
     }
-
     mutation {
-      createResident(address: "111", unitNumber: "111", email: "4w5htw4",
+      createResident(address: "111", unitNumber: "111", email: "4w52htw4",
         password: "1234", name: "w35rgh", phoneNumber: "345t6", isSmsNotification: false
       	isEmailNotification: false, smsNotificationSent: false, emailNotificationSent: false) {
         id
       }
     }
-    
     mutation {
-      addPackagesToResident(idResident: "99", idPackages: ["68", "69"]) {
+      addPackagesToResident(idResident: "1", idPackages: ["1", "2"]) {
+        id
+      }
+    }
+    mutation {
+      addResidentsToBuilding(idResidents: ["99"], idBuilding: "52"){
+        id
+      }
+    }
+    query {
+      allPackagesForBuilding(idBuilding: "1") {
         code
+      }
+    }
+    mutation {
+      createBuilding(address: "e456tyh") {
+        id
+      }
+    }
+    mutation {
+      addPackagesToBuilding(idBuilding: "1", idPackages: [1, 2]){
+        id
+      }
+    }
+    query {
+      getResidentByEmail(email: "4w52htw4"){
+    		id
+      }
+    }
+    query {
+      getSecurityAdminByEmail(email: "test") {
+        id
+      }
+    }
+    query {
+      allPackagesForResident(idResident: 1) {
+        id
       }
     }
