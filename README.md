@@ -109,10 +109,6 @@ I will be using aes256 as a hashing method as it's a rather secure encryption st
 
 ## Notes on running the backend (and creating the initial database)
 
-
-Rename /prisma/schema.prisma to schema.prisma.dev
-Rename /prisma/schema.prisma.prod to schema.prisma
-
 Make sure to create a .env file within prisma folder that has this two variable defined
 
     DATABASE_URL="<db connection string>"
@@ -133,6 +129,7 @@ Create your database (say yes to create dev.db and give a name to the migration)
 
     npx prisma migrate save --experimental
     npx prisma migrate up --experimental
+    npm run updateSchema
 
 You can simply run the backend and use the playground by using:
 

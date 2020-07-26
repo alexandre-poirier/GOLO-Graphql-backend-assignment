@@ -94,6 +94,18 @@ const Mutation = objectType({
       },
       resolve: resolvers.addPackagesToResident,
     });
+    t.field("addPackagesToBuilding", {
+      type: Building,
+      nullable: true,
+      args: {
+        idBuilding: idArg({ required: true }),
+        idPackages: idArg({
+          list: true,
+          required: true,
+        }),
+      },
+      resolve: resolvers.addPackagesToBuilding,
+    });
     t.field("addResidentsToBuilding", {
       type: Building,
       nullable: true,
@@ -132,9 +144,18 @@ const Query = objectType({
       list: [false],
       nullable: true,
       args: {
-        id: idArg({ required: true }),
+        idBuilding: idArg({ required: true }),
       },
-      // resolve: resolvers.allPackagesForBuilding,
+      resolve: resolvers.allPackagesForBuilding,
+    });
+    t.field("allPackagesForResident", {
+      type: PackageUnit,
+      list: [false],
+      nullable: true,
+      args: {
+        idResident: idArg({ required: true }),
+      },
+      resolve: resolvers.allPackagesForResident,
     });
     t.field("getResidentByEmail", {
       type: Resident,
@@ -142,7 +163,7 @@ const Query = objectType({
       args: {
         email: stringArg({ required: true }),
       },
-      // resolve: resolvers.getResidentByEmail,
+      resolve: resolvers.getResidentByEmail,
     });
     t.field("getSecurityAdminByEmail", {
       type: SecurityAdmin,
@@ -150,7 +171,7 @@ const Query = objectType({
       args: {
         email: stringArg({ required: true }),
       },
-      // resolvers.getSecurityAdminByEmail,
+      resolve: resolvers.getSecurityAdminByEmail,
     });
     t.string("login", {
       nullable: true,

@@ -146,6 +146,66 @@ let resolvers = {
       },
     });
   },
+  addPackagesToBuilding: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;   
+
+    let idPackageListOfObject = [];
+    args.idPackages.map((idPackage) => {
+      let intIdPackage = parseInt(idPackage);
+      idPackageListOfObject.push({id: intIdPackage});
+    });
+
+    return prisma.building.update({
+      where: {
+        id: parseInt(args.idBuilding),
+      },
+      data: {
+        PackageUnit: {
+          connect: idPackageListOfObject,
+        },
+      },
+    });
+  },
+  allPackagesForBuilding: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;   
+
+    return prisma.packageUnit.findMany({
+      where: {
+        Building: {
+          id: parseInt(args.idBuilding)
+        }
+      }
+    });
+  },
+  allPackagesForResident: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, false)) return null;   
+
+    return prisma.packageUnit.findMany({
+      where: {
+        Resident: {
+          id: parseInt(args.idResident)
+        }
+      }
+    });
+  },
+  getResidentByEmail: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;   
+
+    return prisma.resident.findOne({
+      where: {
+        email: args.email
+      }
+    });
+  },
+  getSecurityAdminByEmail: (root, args, ctx) => {
+    if (!validateAuthorization(ctx, true)) return null;   
+
+    return prisma.securityAdmin.findOne({
+      where: {
+        email: args.email
+      }
+    });
+  },
 };
 
 let validateAuthorization = (context, shouldBeAdmin) => {
