@@ -19,8 +19,8 @@ RUN npm install --unsafe-perm || \
     fi) && false)
 
 RUN npx prisma generate
-
-RUN npx prisma migrate save --experimental
+RUN date >/build-date.txt
+RUN npx prisma migrate save --experimental --create-db --name $(cat /build-date.txt)
 RUN npx prisma migrate up --experimental
 
 CMD npm start

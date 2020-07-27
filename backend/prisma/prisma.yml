@@ -5,14 +5,14 @@ generate:
     output: ../src/generated/prisma-client/
 
 # This schema is the one used for client library generation
-datamodel: /datamodel.graphql
+datamodel: ../src/generated/schema.graphql
 
 
 
 # Scripts I might use depending on where I deploy (this is confirguration for AWS, I have to validate for Google Cloud)
 hooks:
-    post-deploy:
-      - prisma generate
+  post-deploy:
+    - prisma generate
   
 # seed:
 #   run: npm run seedData
